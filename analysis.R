@@ -49,3 +49,73 @@ ggsave(filename = "eda_sessions.png",
          geom_bar(stat="identity", fill="#56B4E9") + theme_gg() +
          labs(title = "Unique users in the test, by group", x = "Group", y = "Users"))
 
+# Now that we've done the EDA, let's do the actual analysis.
+
+# Ignore sessions that involved clickthroughs but didn't involve search,
+# for the time being.
+
+# Analysis!
+bae <- function(data){
+  
+  # For each cohort, identify the clickthrough rate
+  split_data <- split(data, f = data$cohort)
+  
+  by_group_rates <- lapply(split_data, function(x){
+    
+    # Produce, for each session, a TRUE or FALSE
+    results <- x[,j = {
+      if(.N == 1 || !("clickthrough" %in% event_type)){
+        FALSE
+      } else {
+        TRUE
+      }
+    }, by = "session"]
+    
+    # Return the number of failures and successes
+    return(c(sum(results$V1), (nrow(results) - sum(results$V1))))
+  })
+  
+  output <- list()
+  
+  # Test the first AB group against the control
+  first_control <- matrix(c(by_group_rates$abtest1, by_group_rates$control), ncol=2, byrow = TRUE,
+                          dimnames = list(c("Test","Control"), c("Success", "Failure")))
+  output$first_control_diff_tail <- ci_prop_diff_tail(first_control) # -0.009389691  0.028738770
+  output$first_control_risk <- ci_relative_risk(first_control) # 0.9772447 1.0729769
+  
+  # Second against control
+  second_control <- matrix(c(by_group_rates$abtest2, by_group_rates$control), ncol=2, byrow = TRUE,
+                           dimnames = list(c("Test","Control"), c("Success", "Failure")))
+  output$second_control_diff_tail <- ci_prop_diff_tail(second_control) # 0.01672383 0.05504235
+  output$second_control_risk <- ci_relative_risk(second_control) # 1.040519 1.139807
+  
+  return(output)
+}
+
+output <- list()
+
+# Search-only
+search_only <- data[,j={
+  if("clickthrough" %in% event_type && !("search" %in% Section_used)){
+    NULL
+  } else {
+    .SD
+  }
+}, by = "session"]
+
+output$search_only <- bae(search_only)
+
+# Non-search-only
+non_search_only <- data[,j={
+  if("clickthrough" %in% event_type && ("search" %in% Section_used)){
+    NULL
+  } else {
+    .SD
+  }
+}, by = "session"]
+
+output$non_search_only <- bae(non_search_only)
+
+# Overall
+output$overall <- bae(data)
+save(output, file = "results.RData")
