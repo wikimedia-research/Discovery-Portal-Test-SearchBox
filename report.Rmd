@@ -24,7 +24,8 @@ the results that were returned.
 
 The test ran from 13 January to 20 January 2016, producing 25,579 events from 15,220 browsing sessions. These sessions were almost perfectly evenly distributed between groups:
 
-![groups](eda_sessions.png)
+1. The control group had 
+
 
 ## Results
 
@@ -38,7 +39,7 @@ To allow us to distinguish between these outcomes we tested the overall populati
 
 ### Overall
 
-Applying bayesian methodologies, we compared the first test group to the control, and then the second test group to the control.
+Applying Bayesian methodologies, we compared the first test group to the control, and then the second test group to the control.
 
 With the first test group we found no trustworthy improvement; the difference for the test group as between *-0.9*% and *2.8*%. Since it isn't even consistently positive, it is not reliable.
 
