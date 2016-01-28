@@ -17,15 +17,18 @@ improvement be deployed.
 The default search experience on the Wikipedia portal consists of a small, grey search box.
 If something is typed into the box, a plain dropdown of proposed results is given.
 
-We were interested in testing whether increasing the size and prominence of the search box, and distinctly providing descriptions and images for the proposed results, would increase the rate at which users clicked through to a Wikipedia project.
+We were interested in testing whether increasing the size and prominence of the search box, and distinctly providing descriptions and images for the proposed results, would increase the rate at which users clicked through to a Wikipedia project. The version with a prominent box and descriptive text can be seen below:
+
+![Final test version](abtest2 - typeaheadf.png)
 
 Accordingly we designed an A/B/C test, with three groups. The control group received the default experience. The first test group received a more prominent search bar. The second test group received a more prominent search bar, and in addition images and descriptions in
 the results that were returned.
 
 The test ran from 13 January to 20 January 2016, producing 25,579 events from 15,220 browsing sessions. These sessions were almost perfectly evenly distributed between groups:
 
-1. The control group had 
-
+1. The control group had **5,178** users;
+2. The first test group  **5,030** users;
+3. The second test group **5,012** users.
 
 ## Results
 
